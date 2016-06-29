@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    create post
+{% endblock %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+
+
+{% block content %}
+    <div class="col-md-6">
+        <h2>Preview</h2><hr>
+        <h3 class="preview-title"></h3>
+        <p class="preview-content"></p>
+    </div>
+    <div class="col-md-6">
+        <h2>Post</h2><hr>
+       <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" value="create">
+        </form>
+    </div>
+
+    <script>
+        var titleItem=$('#id_title');
+        var contentItem=$('#id_content');
+
+
+    function setContent(value)
+    {
+        $('.preview-content').html(marked(value));
+        $('.preview-content img').addClass('img-responsive');
+    }
+
+    function setTitle(value)
+    {
+        $('.preview-title').text(value);
+    }
+    setContent(contentItem.val())
+    $('#id_content').keyup(function(){
+        setContent(contentItem.val());
+    });
+
+    setTitle(titleItem.val())
+    $('#id_title').keyup(function(){
+        setTitle(titleItem.val())
+    })
+    </script>
+{% endblock %}

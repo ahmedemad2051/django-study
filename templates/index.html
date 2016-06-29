@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    posts
+{% endblock %}
+
+{% block content %}
+    {% for post in posts %}
+        <h2>
+            <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a>
+            |
+            <a href="{% url 'posts:delete' post.id %}">delete</a>
+        </h2>
+        {% cycle "" "" "<hr>" %}
+    {% endfor %}
+
+
+
+
+
+    <ul class="pagination">
+        {% if posts.has_previous %}
+            <li><a href="?page={{ posts.previous_page_number }}">previous</a></li>
+        {% endif %}
+
+        {% for i in pages %}
+            <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endfor %}
+
+        {% if posts.has_next %}
+            <li><a href="?page={{ posts.next_page_number }}">next</a></li>
+        {% endif %}
+    </ul>
+
+
+
+
+
+{% endblock %}

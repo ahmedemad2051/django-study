@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h2>{{ post.title }} {% if post.draft %}<span style="color:red">Draft</span>{% endif %}<br>
+        <strong>{{ post.publish|timesince }}</strong></h2>
+
+    {% if post.image %}
+        <img src="{{ post.image.url }}" class="img-thumbnail">
+    {% endif %}
+    {#    <p>{{ post.content|truncatechars:100|linebreaks|safe }}</p><br>#}
+    {#    <p>{{ post.content|truncatechars:100|safe }}</p><br>#}
+    <p>
+    <div class="content-markdown ">{{ post.content|linebreaks }}</div></p><br>
+
+
+    <div class="fb-share-button" data-href="{{ request.get_absolute_uri }}" data-layout="button_count"
+         data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank"
+                                      href="{{ request.get_absolute_uri }}">share</a></div>
+    <br>
+    <h4>comment:</h4>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form|crispy }}
+        <input type="submit" value="comment">
+    </form>
+    <br>
+    <hr>
+    {% for comment in post.comment_set.all %}
+        <h5>{{ comment.content }}</h5>
+        <strong>via {{ comment.user }} on {{ comment.timestamp|timesince }}|<a href="#"
+                                                                               class="comment-reply-btn">reply</a></strong>
+        <div class="comment-reply">
+            <blockquote>
+                {% for child in comment.children %}
+                    <h5>{{ child.content }}</h5>
+                    <strong>via {{ child.user }} on {{ child.timestamp|timesince }}</strong>
+                {% endfor %}
+            </blockquote>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <input type="submit" value="reply">
+            </form>
+        </div>
+        <hr>
+    {% endfor %}
+    <div class="fb-comments" data-href="{{ request.get_absolute_uri }}" data-numposts="5"></div>
+
+
+
+{% endblock %}
