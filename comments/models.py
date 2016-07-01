@@ -13,6 +13,7 @@ class Comment(models.Model):
     user=models.ForeignKey(settings.AUTH_USER_MODEL,default=1)
     post=models.ForeignKey(Post)
     content=models.TextField()
+    read_time=models.FloatField(null=True)
     parent=models.ForeignKey('self',on_delete=models.CASCADE,null=True,blank=True)
     timestamp=models.DateTimeField(auto_now_add=True)
 

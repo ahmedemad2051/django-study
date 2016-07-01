@@ -39,11 +39,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'pagedown',
+    'accounts',
     'comments',
     'posts'
 ]
 
 CRISPY_TEMPLATE_PACK='bootstrap3'
+
+EMAIL_USE_TLS=True
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_HOST_USER='horizons7937@gmail.com'
+EMAIL_HOST_PASSWORD='A793756824159684a'
+EMAIL_PORT=587
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

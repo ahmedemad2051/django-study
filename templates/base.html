@@ -5,55 +5,67 @@
     <title>{% block title %}{% endblock %}</title>
     {% load staticfiles %}
 
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block head %}
     {% endblock %}
-<script src="
+    <script src="
 https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
-<div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/ar_AR/sdk.js#xfbml=1&version=v2.6";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+    <div id="fb-root"></div>
+    <script>(function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/ar_AR/sdk.js#xfbml=1&version=v2.6";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
 
 </head>
 <body>
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="{% url 'posts:index' %}">Home</a></li>
+        <li><a href="{% url 'posts:create' %}">Create post</a></li>
+        {% if request.user.is_authenticated %}
+            <li class="pull-right"><a href="{% url 'accounts:logout' %}">logout</a></li>
+        {% else %}
+            <li class="pull-right"><a href="{% url 'accounts:register' %}">register</a></li>
+            <li class="pull-right"><a href="{% url 'accounts:login' %}">login</a></li>
+        {% endif %}
 
+
+    </ol>
+</div>
 {% include 'messages.html' %}
 <div class="">
-{% block content %}
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
 </div>
 
 
-
-
 <script>
-    $(document).ready(function(){
-        $('.content-markdown').each(function(){
-            var content=$(this).text();
-            content=marked(content);
+    $(document).ready(function () {
+        $('.content-markdown').each(function () {
+            var content = $(this).text();
+            content = marked(content);
             $(this).html(content);
         });
 
-         $('.content-markdown img').each(function(){
+        $('.content-markdown img').each(function () {
 
             $(this).addClass('img-responsive');
         });
     });
 </script>
 
- <script>
-    $(document).on('click','.comment-reply-btn',function(e){
+<script>
+    $(document).on('click', '.comment-reply-btn', function (e) {
         e.preventDefault();
         $(this).parent().next('.comment-reply').fadeToggle();
     })
-    </script>
+</script>
 </body>
 </html>

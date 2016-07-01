@@ -5,16 +5,20 @@
 {% endblock %}
 
 {% block content %}
+
     {% for post in posts %}
         <h2>
             <a href="{% url 'posts:detail' post.id %}">{{ post.title }}</a>
+            {% if post.draft %} | <span class="text-danger"> Draft</span> {% endif %}
+            {% if post.user == request.user %}
+            |
+            <a href="{% url 'posts:edit' post.id %}">edit</a>
             |
             <a href="{% url 'posts:delete' post.id %}">delete</a>
+            {% endif %}
         </h2>
         {% cycle "" "" "<hr>" %}
     {% endfor %}
-
-
 
 
 
@@ -31,9 +35,6 @@
             <li><a href="?page={{ posts.next_page_number }}">next</a></li>
         {% endif %}
     </ul>
-
-
-
 
 
 {% endblock %}

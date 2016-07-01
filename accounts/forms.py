@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth import authenticate,get_user_model,login,logout
+from django.contrib.auth import authenticate,get_user_model
 
 User = get_user_model()
 
@@ -15,6 +15,8 @@ class UserForm(forms.Form):
             user=authenticate(username=username,password=password)
             if not user:
                 raise forms.ValidationError('this user not exists')
+            if not user.is_staff:
+                raise forms.ValidationError('you should confirm your email first')
         return super(UserForm,self).clean()
 
 
